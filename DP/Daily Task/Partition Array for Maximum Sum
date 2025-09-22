@@ -1,0 +1,55 @@
+https://leetcode.com/problems/partition-array-for-maximum-sum/description/
+
+
+//Recursion
+
+class Solution {
+public:
+    int n;
+    int func(int i,vector<int>& arr,int k){
+
+        if(i>=n) return 0;
+        int current_max=-1;
+        int ans=0;
+        for(int j=i;j<n &&(j-i+1)<=k;j++){
+            current_max=max(current_max,arr[j]);
+            ans=max((current_max*(j-i+1))+func(j+1,arr,k),ans);       
+        }
+        return ans;
+    }
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        n=arr.size();
+        return func(0,arr,k);
+        
+    }
+};
+
+
+
+
+//Memo
+
+
+class Solution {
+public:
+    int n;
+    int dp[501];
+    int func(int i,vector<int>& arr,int k){
+
+        if(i>=n) return 0;
+        if(dp[i]!=-1) return dp[i];
+        int current_max=-1;
+        int ans=0;
+        for(int j=i;j<n &&(j-i+1)<=k;j++){
+            current_max=max(current_max,arr[j]);
+            ans=max((current_max*(j-i+1))+func(j+1,arr,k),ans);       
+        }
+        return dp[i]=ans;
+    }
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        n=arr.size();
+        memset(dp,-1,sizeof(dp));
+        return func(0,arr,k);
+        
+    }
+};
