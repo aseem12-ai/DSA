@@ -1,0 +1,90 @@
+https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/description/
+
+//Recursion
+
+
+class Solution {
+public:
+    int n;
+    // map<pair<int,int>,int> memo;
+    int func(int i,vector<int>& nums,int diff,int prev){
+        if(i>=n){
+            return 0;
+        }
+        // pair<int,int> key={i,prev};
+        // if(memo.count(key)) return memo[key];
+        
+        int not_take=func(i+1,nums,diff,prev);
+        int take=INT_MIN;
+        if(prev==-1 || nums[i]-nums[prev]==diff){
+            
+            take=1+func(i+1,nums,diff,i);
+        }
+        return max(take,not_take);
+    }
+    int longestSubsequence(vector<int>& arr, int diff) {
+        n=arr.size();
+        // vector<vector<long long>> dp(n,vector<long long>(n+1,-1));
+        return func(0,arr,diff,-1);
+        
+    }
+};
+
+
+
+
+//Memo
+
+
+
+class Solution {
+public:
+    int n;
+    map<pair<int,int>,int> memo;
+    int func(int i,vector<int>& nums,int diff,int prev){
+        if(i>=n){
+            return 0;
+        }
+        pair<int,int> key={i,prev};
+        if(memo.count(key)) return memo[key];
+        
+        int not_take=func(i+1,nums,diff,prev);
+        int take=INT_MIN;
+        if(prev==-1 || nums[i]-nums[prev]==diff){
+            
+            take=1+func(i+1,nums,diff,i);
+        }
+        return memo[key]=max(take,not_take);
+    }
+    int longestSubsequence(vector<int>& arr, int diff) {
+        n=arr.size();
+        // vector<vector<long long>> dp(n,vector<long long>(n+1,-1));
+        return func(0,arr,diff,-1);
+        
+    }
+};
+
+
+
+
+
+//Top-Down
+
+
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int diff) {
+        unordered_map<int,int> dp;
+        int ans=INT_MIN;
+        for(int x:arr){
+            int prev=x-diff;
+
+            dp[x]=dp[prev]+1;
+            ans=max(ans,dp[x]);
+        }
+        return ans;
+    }
+};
+
+
+
