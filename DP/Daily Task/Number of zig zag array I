@@ -1,0 +1,39 @@
+https://leetcode.com/problems/number-of-zigzag-arrays-i/description/
+
+
+
+class Solution {
+public:
+    const int M=1e9 + 7;
+    int zigZagArrays(int n, int l, int r) {
+        int z=r-l+1;
+        if(z<=0) return 0;
+        vector<int> t(z+1,1);
+
+        for(int i=1;i<n;i++){
+            vector<int> newt(z+1);
+            if(i%2){
+                long long pre=0;
+                for(int x=0;x<z;x++){
+                    newt[x]=(int)pre;
+                    pre=(pre+t[x])%M;
+                }
+
+            }
+            else{
+                long long suff=0;
+                for(int x=z-1;x>=0;x--){
+                    newt[x]=(int)suff;
+                    suff=(suff+t[x])%M;
+                }
+            }
+            t.swap(newt);
+        }
+        long long count=0;
+        for(auto x:t){
+            count=(count+x)%M;
+        }
+        return (int)(2*count % M);
+        
+    }
+};
